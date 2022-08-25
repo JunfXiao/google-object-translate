@@ -1,0 +1,10 @@
+dist
+coverage
+
+.idea
+*.iml
+*.tgz
+
+.env
+
+node_modules

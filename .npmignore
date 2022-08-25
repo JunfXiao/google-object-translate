@@ -1,0 +1,13 @@
+src
+coverage
+
+.idea
+*.iml
+*.tgz
+
+jest.config.js
+
+
+.env
+
+node_modules

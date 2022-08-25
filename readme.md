@@ -22,10 +22,9 @@ npm install @google-cloud/translate
 ### Use build-in translate function
 
 ```typescript
-import {ObjectTranslate} from 'google-object-translate/translate';
+import {translate} from 'google-object-translate';
 
-
-const client = ObjectTranslate.createClient('v2', {
+const client = translate.ObjectTranslate.createClient('v2', {
     // your google-cloud config here
     // See: https://cloud.google.com/nodejs/docs/reference/translate/latest/translate/v2.translateconfig
 })
@@ -51,6 +50,10 @@ const result = await client.translate(
 ```
 
 ### Use custom translate function
+
+```typescript
+import {parser} from 'google-object-translate';
+```
 
 #### `parser.fromObject` : Parse object to pseudo HTML
 
@@ -122,7 +125,6 @@ before:
 after:
 
 ```html
-
 <body>
 <ol>
     <li>item 1</li>
@@ -154,7 +156,6 @@ before:
 after:
 
 ```html
-
 <body>
 <div>
     <ol id="b">

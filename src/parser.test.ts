@@ -15,12 +15,12 @@ test("parser: single - string - revert", () => {
 
 test("parser: single - list", () => {
     let result = parser.fromObject(["item 1", 2, true, "item 2"])
-    expect(result).toBe("<body><ol><li>item 1</li><li>item 2</li></ol></body>")
+    expect(result).toBe("<body><ol><li>item 1</li><li></li><li></li><li>item 2</li></ol></body>")
 })
 
 test("parser: single - list - revert", () => {
-    let result = parser.toObject("<body><ol><li>item1</li></ol></body>")
-    expect(result).toEqual(["item1"])
+    let result = parser.toObject("<body><ol><li>item1</li><li></li><li></li><li>item 2</li></ol></body>")
+    expect(result).toEqual(["item1", undefined, undefined, "item 2"])
 })
 
 test("parser: single - object", () => {
@@ -50,13 +50,13 @@ test("parser: complicated - object", () => {
             "d2": "d2v"
         }
     })
-    expect(result).toBe(`<body><div><ol id="b"><li>item1</li></ol><div id="d"><p id="d1">d1v</p><p id="d2">d2v</p></div></div></body>`)
+    expect(result).toBe(`<body><div><ol id="b"><li>item1</li><li></li><li></li></ol><div id="d"><p id="d1">d1v</p><p id="d2">d2v</p></div></div></body>`)
 })
 
 test("parser: complicated - object - revert", () => {
-    let result = parser.toObject(`<body><div><ol id="b"><li>item1</li></ol><div id="d"><p id="d1">d1v</p><p id="d2">d2v</p></div></div></body>`)
+    let result = parser.toObject(`<body><div><ol id="b"><li>item1</li><li></li><li></li></ol><div id="d"><p id="d1">d1v</p><p id="d2">d2v</p></div></div></body>`)
     expect(result).toEqual({
-        "b": ["item1"],
+        "b": ["item1", undefined, undefined],
         "d": {
             "d1": "d1v",
             "d2": "d2v"
@@ -79,13 +79,13 @@ test("parser: complicated - nested object and list", () => {
         }
     }
     let targetObj = {
-        "b": ["item1", ['item3-1', 'item3-2']],
+        "b": ["item1", undefined, ['item3-1', undefined, 'item3-2'], undefined],
         "d": {
             "d1": "d1v",
             "d2": "d2v",
             "d3": {
                 "d3a": "d3a",
-                "d3b": ["item1"]
+                "d3b": ["item1", undefined, undefined]
             }
         }
     }

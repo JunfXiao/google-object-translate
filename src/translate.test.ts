@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 import {ObjectTranslate} from './translate';
 
 dotenv.config();
@@ -34,6 +34,7 @@ if (!process.env.G_TRANSLATE_API_KEY) {
             })
         expect(result[0]).toEqual({
             "title": "你好世界",
+            "viewerNumber": 1,
             "content": "世界",
         })
     })
@@ -54,6 +55,7 @@ if (!process.env.G_TRANSLATE_API_KEY) {
         expect(result[0]).toEqual([
             "你好世界",
             "世界",
+            123,
             "你好"
         ])
     })

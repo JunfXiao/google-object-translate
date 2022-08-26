@@ -69,9 +69,9 @@ class ObjectTranslateV2 extends ObjectTranslate<'v2', TranslateRequest> {
         })
         let parsedTranslation: TranslationObject;
         if (typeof rawTranslation[0] === 'string') {
-            parsedTranslation = parser.toObject(rawTranslation[0])
+            parsedTranslation = parser.toObject(rawTranslation[0], input)
         } else if (Array.isArray(rawTranslation[0])) {
-            parsedTranslation = rawTranslation[0].map(item => parser.toObject(item))
+            parsedTranslation = rawTranslation[0].map(item => parser.toObject(item, input))
         } else {
             throw new Error('Unknown translation type: ' + typeof rawTranslation[0] + " " + rawTranslation[0])
         }

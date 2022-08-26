@@ -32,7 +32,13 @@ const client = translate.ObjectTranslate.createClient('v2', {
 const objToTranslate = {
     "title": "Hello World",
     "viewerNumber": 1,
-    "content": "World"
+    "content": "World",
+    "hybridList": [
+        "Hello",
+        null,
+        undefined,
+        "World"
+    ]
 }
 
 const result = await client.translate(
@@ -44,8 +50,15 @@ const result = await client.translate(
 
     })
 // result = {
-//     "title":"你好世界",
-//     "content":"世界",
+//     "title": "你好世界",
+//     "viewerNumber": 1,
+//     "content": "世界",
+//     "hybridList": [
+//         "你好",
+//         null,
+//         undefined,
+//         "世界"
+//     ]
 // }
 ```
 
@@ -55,26 +68,33 @@ const result = await client.translate(
 import {parser} from 'google-object-translate';
 ```
 
+
+
 #### `parser.fromObject` : Parse object to pseudo HTML
 
-##### Arguments:
+- Arguments:
 
 | Name     | Type                                              | Required | Default  | Comment                                                      |
 | -------- | ------------------------------------------------- | -------- | -------- | ------------------------------------------------------------ |
 | `obj`    | `TranslationObject`                               | true     | -        | The object to translate                                      |
 | `filter` | `(path: string[], sentence: Sentence) => boolean` | false    | ()=>true | Filter function that decide a Sentence is translatable or not. `True` means it is translatable. |
 
-##### Return Type: `string`
+- Return Type:  `string`
+
+  
 
 #### `parser.toObject` : Parse pseudo HTML back to object
 
-##### Arguments:
+- Arguments:
 
-| Name         | Type     | Required | Default | Comment |
-| ------------ | -------- | -------- | ------- | ------- |
-| `pseudoHTML` | `string` | true     | -       | -       |
+| Name            | Type              | Required | Default   | Comment                                                      |
+| --------------- | ----------------- | -------- | --------- | ------------------------------------------------------------ |
+| `pseudoHTML`    | `string`          | true     | -         | -                                                            |
+| _originalObject | TranslationObject | false    | undefined | The original object that will be merged to translated object. |
 
-##### Return Type: `TranslationObject`
+- Return Type: `TranslationObject`
+
+
 
 ## Todo
 
@@ -82,23 +102,25 @@ import {parser} from 'google-object-translate';
 
 ## Types
 
-| Type              | Alias for                 |
-| ----------------- | ------------------------- |
-| Sentence          | string \| object          |
-| SentenceArray     | Sentence[]                |
+| Type              | Alias for |
+| ----------------- |-----------|
+| Sentence          | string \| object \| undefined |
+| SentenceArray     | Sentence[] |
 | TranslationObject | Sentence \| SentenceArray |
 
 ## Conversion Rules
 
 ### Some values are skipped
 
-Some values will not be converted to pseudo HTML because it's meaningless. This includes:
+Some values will not be included to pseudo HTML because it's meaningless. This includes:
 
 - Number
 - Boolean
 - Empty String
 - null
 - undefined
+
+But these values in an array will be replaced with `undefined` as placeholder.
 
 ### string
 
@@ -116,6 +138,8 @@ some str
 
 ### Array
 
+Untranslatable item will become empty tag to maintain the structure.
+
 before:
 
 ```typescript
@@ -125,9 +149,12 @@ before:
 after:
 
 ```html
+
 <body>
 <ol>
     <li>item 1</li>
+    <li></li>
+    <li></li>
     <li>item 2</li>
 </ol>
 </body>
@@ -160,6 +187,8 @@ after:
 <div>
     <ol id="b">
         <li>item1</li>
+        <li></li>
+        <li></li>
     </ol>
     <div id="d">
         <p id="d1">d1v</p>

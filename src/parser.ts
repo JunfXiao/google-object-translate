@@ -1,10 +1,11 @@
 import {encloseWithTag} from "./util/tag";
 import {encodeHtmlStr} from "./util/encode";
 import {JSDOM} from "jsdom";
+import {mergeWith,cloneDeep} from "lodash";
 
 export const name = "parser"
 
-export type Sentence = string | object;
+export type Sentence = string | object | undefined;
 export type SentenceArray = Sentence[];
 export type TranslationObject = Sentence | SentenceArray;
 
@@ -110,7 +111,10 @@ const fromArr: ConvertObjFunc<SentenceArray> = (arr, path, filter, attrs): strin
                     parsedSentence,
                 )
             } else {
-                return ""
+                return encloseWithTag(
+                    'li',
+                    "",
+                )
             }
         }).join("")
 
@@ -118,12 +122,19 @@ const fromArr: ConvertObjFunc<SentenceArray> = (arr, path, filter, attrs): strin
 }
 
 
-export const toObject = (pseudoHTML: string): TranslationObject => {
+export const toObject = (pseudoHTML: string, _originalObject: TranslationObject = undefined): TranslationObject => {
     if (!pseudoHTML.startsWith("<body>") || !pseudoHTML.endsWith("</body>"))
         return pseudoHTML
 
+
     const dom = new JSDOM(pseudoHTML)
-    return toObjController(dom.window.document.body) ?? ""
+    const translation = toObjController(dom.window.document.body) ?? ""
+    if (typeof _originalObject === "undefined" || typeof _originalObject === "string") {
+        return translation
+    } else {
+        let originalObject:TranslationObject = cloneDeep(_originalObject)
+        return mergeWith(originalObject, translation)
+    }
 }
 
 const toObjController: ConvertNodeFunc<TranslationObject> = (ele): TranslationObject => {
@@ -163,7 +174,7 @@ const divToObj: ConvertNodeFunc<any> = (ele) => {
 const olToObj: ConvertNodeFunc<SentenceArray> = (ele) => {
     let result: SentenceArray = []
     for (let child of ele.children) {
-        result.push(toObjController(child))
+        result.push(toObjController(child) || undefined)
     }
     return result
 }

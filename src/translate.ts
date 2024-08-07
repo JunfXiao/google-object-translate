@@ -1,7 +1,7 @@
-import {TranslateRequest} from "@google-cloud/translate/build/src/v2";
-import type {v2, v3, v3beta1} from '@google-cloud/translate'
+import type { TranslateRequest } from "@google-cloud/translate/build/src/v2";
+import type { v2, v3, v3beta1 } from '@google-cloud/translate'
 import * as parser from "./parser";
-import {TranslationObject} from "./parser";
+import { TranslationObject } from "./parser";
 
 export const name = "translate"
 

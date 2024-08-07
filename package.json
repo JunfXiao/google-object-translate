@@ -1,6 +1,6 @@
 {
   "name": "google-object-translate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A module that parse serializable javascript object to pseudo HTML to translate and parse it back.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

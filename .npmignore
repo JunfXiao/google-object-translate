@@ -11,3 +11,5 @@ jest.config.js
 .env
 
 node_modules
+
+tsconfig.json

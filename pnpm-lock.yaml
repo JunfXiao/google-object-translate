@@ -14,10 +14,6 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
-    optionalDependencies:
-      '@google-cloud/translate':
-        specifier: ^8.3.0
-        version: 8.3.0
     devDependencies:
       '@types/jest':
         specifier: ^29.5.12
@@ -40,6 +36,10 @@ importers:
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
+    optionalDependencies:
+      '@google-cloud/translate':
+        specifier: ^8.3.0
+        version: 8.3.0
 
 packages:
 
